@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace CommandLine.Application
+namespace DD2Bot.Adapters.WindowsScreenCapture
 {
     /// <summary>
     /// Helper class containing Gdi32 API functions

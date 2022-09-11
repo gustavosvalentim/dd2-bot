@@ -1,26 +1,22 @@
-﻿using Core;
+﻿using DD2Bot.ApplicationCore.Interfaces;
 using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
-namespace CommandLine.Application.Services
+namespace DD2Bot.Adapters.WindowsScreenCapture
 {
-    public class ScreenCaptureService : IScreenCaptureService
+    public class WindowsScreenCaptureService : IScreenCaptureService
     {
-        private readonly IImageRepository _imageRepository;
-
-        public ScreenCaptureService(IImageRepository imageRepository)
+        public byte[] CaptureDesktop()
         {
-            _imageRepository = imageRepository;
+            IntPtr handle = User32.GetDesktopWindow();
+            return CaptureScreen(handle);
         }
 
         /// <summary>
         /// Capture the screen and returns a buffer with the image contents.
         /// </summary>
         /// <returns>A buffer with image contents.</returns>
-        public byte[] CaptureScreen()
+        public byte[] CaptureScreen(IntPtr handle)
         {
-            IntPtr handle = User32.GetDesktopWindow();
             IntPtr hdcSrc = User32.GetWindowDC(handle);
             User32.RECT windowRect = new User32.RECT();
             User32.GetWindowRect(handle, ref windowRect);
@@ -41,7 +37,7 @@ namespace CommandLine.Application.Services
             GDI32.DeleteDC(hdcDest);
             User32.ReleaseDC(handle, hdcSrc);
 
-            // get a .NET image object for it
+            // get a .NET image object
             Image img = Image.FromHbitmap(hBitmap);
             // free up the Bitmap object
             GDI32.DeleteObject(hBitmap);
@@ -50,11 +46,6 @@ namespace CommandLine.Application.Services
             img.Save(buffer, System.Drawing.Imaging.ImageFormat.Bmp);
 
             return buffer.ToArray();
-        }
-
-        public async Task CaptureScreenToFileAsync(string filepath)
-        {
-            await _imageRepository.SaveImageAsync(filepath, CaptureScreen());
         }
     }
 }

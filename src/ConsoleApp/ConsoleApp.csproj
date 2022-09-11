@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RootNamespace>DD2Bot.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
-    <ProjectReference Include="..\Data.FolderStorage\Persistence.FolderStorage.csproj" />
+    <ProjectReference Include="..\Adapters.FileSystemStorage\Adapters.FileSystemStorage.csproj" />
+    <ProjectReference Include="..\Adapters.WindowsScreenCapture\Adapters.WindowsScreenCapture.csproj" />
+    <ProjectReference Include="..\ApplicationCore\ApplicationCore.csproj" />
   </ItemGroup>
 
 </Project>
